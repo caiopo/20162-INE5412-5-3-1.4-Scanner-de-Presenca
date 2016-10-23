@@ -1,12 +1,7 @@
-#include <utility/ostream.h>
 #include <gpio.h>
-#include <alarm.h>
-#include <chronometer.h>
-
-EPOS::OStream cout;
 
 class Sensor {
-private:
+public:
     EPOS::GPIO *trigger, *echo;
 
 public:
@@ -27,22 +22,17 @@ public:
         EPOS::Delay(10);
         trigger->set(false);
 
-        EPOS::Chronometer chrono;
-
-        while(!echo->get());
-
-        chrono.start();
+        int i = 0;
 
         while(echo->get());
 
-        chrono.stop();
+        while(!echo->get());
 
-        return (chrono.read() / 2) / 29.1;
+        while(echo->get()) ++i;
+
+        cout << "i: " << i;
+        cout << '\n';
+
+        return i / 150;
     }
-
 };
-
-int main(int argc, char** argv) {
-
-
-}
