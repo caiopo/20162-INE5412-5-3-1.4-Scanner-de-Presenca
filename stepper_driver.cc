@@ -4,13 +4,13 @@
 #include <alarm.h>
 #include <gpio.h>
 
-class Stepper {
+class StepperDriver {
  private:
     // These correspond to the ULN2003 Driver pins for the stepper motor
     EPOS::GPIO *IN1, *IN2, *IN3, *IN4; // Blue, pink, yellow, orange, repectivelly
 
     int direction;                  // Direction of rotation (1 is CW, 0 is CCW)
-    unsigned long step_delay;       // Delay between steps, in microseconds, based on speed
+    unsigned int step_delay;       // Delay between steps, in microseconds, based on speed
     int steps_per_motor_revolution;
     int current_step;
 
@@ -50,7 +50,7 @@ class Stepper {
 
 
  public:
-    Stepper(char motor_port_1, unsigned int motor_pin_1,
+    StepperDriver(char motor_port_1, unsigned int motor_pin_1,
             char motor_port_2, unsigned int motor_pin_2,
             char motor_port_3, unsigned int motor_pin_3,
             char motor_port_4, unsigned int motor_pin_4):
@@ -65,7 +65,7 @@ class Stepper {
         steps_per_motor_revolution{32}
     {}
 
-    ~Stepper() {
+    ~StepperDriver() {
         delete IN1;
         delete IN2;
         delete IN3;
@@ -75,8 +75,8 @@ class Stepper {
     // Sets the speed in motor steps per second
     // 32 motor steps = 1 motor revolution
     // 2048 motor steps = 1 shaft revolution
-    void set_speed(long motor_steps_per_second) {
-        step_delay = (1 / motor_steps_per_second) * 1000L * 1000L;
+    void set_speed(double motor_steps_per_second) {
+        step_delay = (unsigned int)((1 / motor_steps_per_second) * 1000 * 1000);
     }
 
     void move(int steps_to_move) {
@@ -98,7 +98,7 @@ class Stepper {
         // Decrement the number of steps, moving one step each time:
         while (steps_left > 0) {
             // Move after the appropriate delay has passed:
-            EPOS::Delay((unsigned int)step_delay);
+            EPOS::Delay(step_delay);
             // Increment or decrement the step number, depending on direction:
             if (direction == 1) {
                 current_step++;

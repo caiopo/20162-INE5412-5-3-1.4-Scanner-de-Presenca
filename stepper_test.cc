@@ -2,11 +2,11 @@
 
 EPOS::OStream cout;
 
-#include "stepper.cc"
+#include "stepper_driver.cc"
 
 
 int main(int argc, char** argv) {
-    Stepper motor('A', 0,
+    StepperDriver motor('A', 0,
                   'A', 2,
                   'A', 5,
                   'A', 7);
