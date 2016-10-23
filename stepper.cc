@@ -9,7 +9,7 @@ EPOS::OStream cout;
 class Stepper {
  private:
     // These correspond to the ULN2003 Driver pins for the stepper motor
-    EPOS::GPIO *IN1, *IN2, IN3, IN4;
+    EPOS::GPIO *IN1, *IN2, *IN3, *IN4; // Blue, pink, yellow, orange, repectivelly
 
     int direction;                  // Direction of rotation (1 is CW, 0 is CCW)
     unsigned long step_delay;       // Delay between steps, in ms, based on speed
@@ -24,24 +24,28 @@ class Stepper {
                 IN2->set(false);
                 IN3->set(false);
                 IN4->set(false);
+                cout << "A should light up";
             break;
             case 1:  // 0100
                 IN1->set(false);
                 IN2->set(true);
                 IN3->set(false);
                 IN4->set(false);
+                cout << "B should light up";
             break;
             case 2:  // 0010
                 IN1->set(false);
                 IN2->set(false);
                 IN3->set(true);
                 IN4->set(false);
+                cout << "C should light up";
             break;
             case 3:  // 0001
                 IN1->set(false);
                 IN2->set(false);
                 IN3->set(false);
                 IN4->set(true);
+                cout << "D should light up";
             break;
         }
     }
@@ -71,13 +75,14 @@ class Stepper {
         delete IN4;
     }
 
-
     // Sets the speed in motor revs per minute
-    void setSpeed(long whatSpeed) {
+    void set_speed(long whatSpeed) {
         this->step_delay = 60L * 1000L * 1000L / this->steps_per_motor_revolution / whatSpeed;
     }
 
     void move(int steps_to_move) {
+        int steps_left;
+
         if (steps_to_move < 0) {
             steps_left = - steps_to_move;
         } else {
@@ -95,8 +100,7 @@ class Stepper {
         while (steps_left > 0) {
             // Move after the appropriate delay has passed:
             EPOS::Delay(this->step_delay);
-            // increment or decrement the step number,
-            // depending on direction:
+            // Increment or decrement the step number, depending on direction:
             if (this->direction == 1) {
                 this->current_step++;
                 if (this->current_step == this->steps_per_motor_revolution) {
@@ -108,9 +112,10 @@ class Stepper {
                 }
                 this->current_step--;
             }
-            // decrement the steps left:
+            // Decrement the steps left:
             steps_left--;
-            // step the motor to step number 0, 1, ..., 3
+            cout << "Steps left: " << steps_left << '\n';
+            // Step the motor to step number 0, 1, ..., 3
             step(this->current_step % 4);
         }
     }
