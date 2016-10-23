@@ -1,21 +1,34 @@
-// This class is meant to be used with the 28BYJ-48 Stepper Motor
+// This class is meant to be used with the 28BYJ-48 Stepper Motor alongside it's
+// ULN2003 Driver
 
 #include <utility/ostream.h>
 #include <alarm.h>
 #include <gpio.h>
 
+EPOS::OStream cout;
+
 class StepperDriver {
  private:
-    // These correspond to the ULN2003 Driver pins for the stepper motor
-    EPOS::GPIO *IN1, *IN2, *IN3, *IN4; // Blue, pink, yellow, orange, repectivelly
+    EPOS::GPIO *IN1, *IN2, *IN3, *IN4;  // These correspond to the ULN2003
+                                        // Driver's pins: blue, pink, yellow and
+                                        // orange, repectivelly
 
-    int direction;                  // Direction of rotation (1 is CW, 0 is CCW)
-    long unsigned int step_delay;       // Delay between steps, in microseconds, based on speed
+    int direction;                      // Direction of rotation (1 is CW, 0 is
+                                        // CCW)
+
+    long unsigned int step_delay;       // Delay between steps, in microseconds,
+                                        // based on speed
+
     int steps_per_motor_revolution;
     int current_step;
 
+    long unsigned int as_delay(double motor_steps_per_second) {
+        (long unsigned int)((1 / motor_steps_per_second) * 1000 * 1000);
+    }
+
+    // Using Wave Drive (11.25 degree motor step angle | ~0.17578 degree output
+    // shaft angle)
     void step(int this_step) {
-        // Using Wave Drive (11.25 degree motor step angle | ~0.17578 degree output shaft angle)
         switch (this_step) {
             case 0:  // 1000
                 IN1->set(true);
@@ -53,7 +66,8 @@ class StepperDriver {
     StepperDriver(char motor_port_1, unsigned int motor_pin_1,
             char motor_port_2, unsigned int motor_pin_2,
             char motor_port_3, unsigned int motor_pin_3,
-            char motor_port_4, unsigned int motor_pin_4):
+            char motor_port_4, unsigned int motor_pin_4,
+            double motor_steps_per_second):
 
         // Setup the pins on EPOSMote III:
         IN1{new EPOS::GPIO(motor_port_1, motor_pin_1, EPOS::GPIO::OUTPUT)},
@@ -62,7 +76,8 @@ class StepperDriver {
         IN4{new EPOS::GPIO(motor_port_4, motor_pin_4, EPOS::GPIO::OUTPUT)},
         direction{0},
         current_step{0},
-        steps_per_motor_revolution{32}
+        steps_per_motor_revolution{32},
+        step_delay{as_delay(motor_steps_per_second)}
     {}
 
     ~StepperDriver() {
@@ -76,7 +91,7 @@ class StepperDriver {
     // 32 motor steps = 1 motor revolution
     // 2048 motor steps = 1 shaft revolution
     void set_speed(double motor_steps_per_second) {
-        step_delay = (long unsigned int)((1 / motor_steps_per_second) * 1000 * 1000);
+        step_delay = as_delay(motor_steps_per_second);
     }
 
     void move(int steps_to_move) {
@@ -112,9 +127,11 @@ class StepperDriver {
                 }
                 current_step--;
             }
+
             // Decrement the steps left:
             steps_left--;
             cout << "Steps left: " << steps_left << '\n';
+
             // Step the motor to step number 0, 1, ..., 3
             step(current_step % 4);
         }
