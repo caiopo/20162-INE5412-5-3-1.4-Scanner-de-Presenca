@@ -22,28 +22,28 @@ class Stepper {
                 IN2->set(false);
                 IN3->set(false);
                 IN4->set(false);
-                cout << "A should light up";
+                cout << "A should light up\n";
             break;
             case 1:  // 0100
                 IN1->set(false);
                 IN2->set(true);
                 IN3->set(false);
                 IN4->set(false);
-                cout << "B should light up";
+                cout << "B should light up\n";
             break;
             case 2:  // 0010
                 IN1->set(false);
                 IN2->set(false);
                 IN3->set(true);
                 IN4->set(false);
-                cout << "C should light up";
+                cout << "C should light up\n";
             break;
             case 3:  // 0001
                 IN1->set(false);
                 IN2->set(false);
                 IN3->set(false);
                 IN4->set(true);
-                cout << "D should light up";
+                cout << "D should light up\n";
             break;
         }
     }
@@ -96,7 +96,10 @@ class Stepper {
         // Decrement the number of steps, moving one step each time:
         while (steps_left > 0) {
             // Move after the appropriate delay has passed:
-            EPOS::Delay((unsigned int)step_delay);
+
+            cout << "Step delay: " << ((unsigned int)step_delay) << '\n';
+
+            EPOS::Delay(((unsigned int)step_delay));
             // Increment or decrement the step number, depending on direction:
             if (direction == 1) {
                 current_step++;
