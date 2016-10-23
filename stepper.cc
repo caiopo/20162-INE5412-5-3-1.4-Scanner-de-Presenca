@@ -76,7 +76,7 @@ class Stepper {
     // 32 motor steps = 1 motor revolution
     // 2048 motor steps = 1 shaft revolution
     void set_speed(long motor_steps_per_second) {
-        step_delay = (1 / motor_steps_per_second) * 1000L * 1000L
+        step_delay = (1 / motor_steps_per_second) * 1000L * 1000L;
     }
 
     void move(int steps_to_move) {
