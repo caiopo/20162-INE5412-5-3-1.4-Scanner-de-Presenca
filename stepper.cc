@@ -10,7 +10,7 @@ class Stepper {
     EPOS::GPIO *IN1, *IN2, *IN3, *IN4; // Blue, pink, yellow, orange, repectivelly
 
     int direction;                  // Direction of rotation (1 is CW, 0 is CCW)
-    unsigned long step_delay;       // Delay between steps, in ms, based on speed
+    unsigned long step_delay;       // Delay between steps, in microseconds, based on speed
     int steps_per_motor_revolution;
     int current_step;
 
@@ -72,9 +72,11 @@ class Stepper {
         delete IN4;
     }
 
-    // Sets the speed in motor revs per minute
-    void set_speed(long speed) {
-        step_delay = 60L * 1000L * 1000L / steps_per_motor_revolution / speed;
+    // Sets the speed in motor steps per second
+    // 32 motor steps = 1 motor revolution
+    // 2048 motor steps = 1 shaft revolution
+    void set_speed(long motor_steps_per_second) {
+        step_delay = (1 / motor_steps_per_second) * 1000L * 1000L;
     }
 
     void move(int steps_to_move) {

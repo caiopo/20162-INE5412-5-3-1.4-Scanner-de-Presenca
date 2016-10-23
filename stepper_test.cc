@@ -12,8 +12,11 @@ int main(int argc, char** argv) {
                   'A', 5,
                   'A', 7);
 
-    // 128 motor revolutions per minute
-    motor.set_speed(1);
+    // Sets the speed in motor steps per second
+    // 32 motor steps = 1 motor revolution
+    // 2048 motor steps = 1 shaft revolution
+    // Should go 1 step each 1.875s
+    motor.set_speed(32.0/60.0);
 
     while(true) {
         led.set(true);
