@@ -4,8 +4,6 @@
 #include <alarm.h>
 #include <gpio.h>
 
-EPOS::OStream cout;
-
 class Stepper {
  private:
     // These correspond to the ULN2003 Driver pins for the stepper motor
@@ -18,7 +16,7 @@ class Stepper {
 
     void step(int this_step) {
         // Using Wave Drive (11.25 degree motor step angle | ~0.17578 degree output shaft angle)
-        switch (thisStep) {
+        switch (this_step) {
             case 0:  // 1000
                 IN1->set(true);
                 IN2->set(false);
@@ -55,18 +53,17 @@ class Stepper {
     Stepper(char motor_port_1, unsigned int motor_pin_1,
             char motor_port_2, unsigned int motor_pin_2,
             char motor_port_3, unsigned int motor_pin_3,
-            char motor_port_4, unsigned int motor_pin_4) {
-
-        this->current_step = 0;
-        this->direction = 0;
-        this->steps_per_motor_revolution = 32;
+            char motor_port_4, unsigned int motor_pin_4):
 
         // Setup the pins on EPOSMote III:
-        IN1{new EPOS::GPIO(motor_port_1, motor_pin_1, EPOS::GPIO OUTPUT)};
-        IN2{new EPOS::GPIO(motor_port_2, motor_pin_2, EPOS::GPIO OUTPUT)};
-        IN3{new EPOS::GPIO(motor_port_3, motor_pin_3, EPOS::GPIO OUTPUT)};
-        IN4{new EPOS::GPIO(motor_port_4, motor_pin_4, EPOS::GPIO OUTPUT)};
-    }
+        IN1{new EPOS::GPIO(motor_port_1, motor_pin_1, EPOS::GPIO::OUTPUT)},
+        IN2{new EPOS::GPIO(motor_port_2, motor_pin_2, EPOS::GPIO::OUTPUT)},
+        IN3{new EPOS::GPIO(motor_port_3, motor_pin_3, EPOS::GPIO::OUTPUT)},
+        IN4{new EPOS::GPIO(motor_port_4, motor_pin_4, EPOS::GPIO::OUTPUT)},
+        direction{0},
+        current_step{0},
+        steps_per_motor_revolution{32}
+    {}
 
     ~Stepper() {
         delete IN1;
@@ -76,8 +73,8 @@ class Stepper {
     }
 
     // Sets the speed in motor revs per minute
-    void set_speed(long whatSpeed) {
-        this->step_delay = 60L * 1000L * 1000L / this->steps_per_motor_revolution / whatSpeed;
+    void set_speed(long speed) {
+        step_delay = 60L * 1000L * 1000L / steps_per_motor_revolution / speed;
     }
 
     void move(int steps_to_move) {
@@ -91,32 +88,32 @@ class Stepper {
 
         // Determine direction based on whether steps_to_move is + or -:
         if (steps_to_move > 0) {
-            this->direction = 1;
+            direction = 1;
         } else {
-            this->direction = 0;
+            direction = 0;
         }
 
         // Decrement the number of steps, moving one step each time:
         while (steps_left > 0) {
             // Move after the appropriate delay has passed:
-            EPOS::Delay(this->step_delay);
+            EPOS::Delay((unsigned int)step_delay);
             // Increment or decrement the step number, depending on direction:
-            if (this->direction == 1) {
-                this->current_step++;
-                if (this->current_step == this->steps_per_motor_revolution) {
-                    this->current_step = 0;
+            if (direction == 1) {
+                current_step++;
+                if (current_step == steps_per_motor_revolution) {
+                    current_step = 0;
                 }
             } else {
-                if (this->current_step == 0) {
-                    this->current_step = this->steps_per_motor_revolution;
+                if (current_step == 0) {
+                    current_step = steps_per_motor_revolution;
                 }
-                this->current_step--;
+                current_step--;
             }
             // Decrement the steps left:
             steps_left--;
             cout << "Steps left: " << steps_left << '\n';
             // Step the motor to step number 0, 1, ..., 3
-            step(this->current_step % 4);
+            step(current_step % 4);
         }
     }
 };
