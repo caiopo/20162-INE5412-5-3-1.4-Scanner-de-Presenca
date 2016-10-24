@@ -1,4 +1,5 @@
 #include <utility/ostream.h>
+#include <alarm.h>
 EPOS::OStream cout;
 #include "sensor.cc"
 

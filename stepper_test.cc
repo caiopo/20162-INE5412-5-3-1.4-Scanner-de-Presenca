@@ -16,7 +16,13 @@ int main(int argc, char** argv) {
                   'A', 2,
                   'A', 5,
                   'A', 7,
-                  32/60);
+                  32.0/60.0);
+
+    StepperDriver driver2('C', 4,
+                  'C', 7,
+                  'B', 2,
+                  'B', 5,
+                  32.0/60.0);
 
 
     while(true) {
@@ -24,14 +30,16 @@ int main(int argc, char** argv) {
         cout << "Doing 64 motor steps clock-wise:\n";
         // Sequence should go A, B, C, D.
         // Represents moving 1 coordinate clock-wise
-        driver.move(64);
+        driver.move(10);
+        driver2.move(10);
 
         led.set(false);
 
         cout << "Doing 64 motor steps counterclock-wise:\n";
         // Sequence should go D, C, B, A.
         // Represents moving 1 coordinate counterclock-wise
-        driver.move(-64);
+        driver.move(-10);
+        driver2.move(-10);
 
     }
 }

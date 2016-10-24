@@ -5,7 +5,7 @@
 #include <alarm.h>
 #include <gpio.h>
 
-EPOS::OStream cout;
+// EPOS::OStream cout;
 
 class StepperDriver {
  private:
@@ -22,9 +22,9 @@ class StepperDriver {
     int steps_per_motor_revolution;
     int current_step;
 
-    long unsigned int as_delay(double motor_steps_per_second) {
-        (long unsigned int)((1 / motor_steps_per_second) * 1000 * 1000);
-    }
+    // long unsigned int as_delay(double motor_steps_per_second) {
+    //     return
+    // }
 
     // Using Wave Drive (11.25 degree motor step angle | ~0.17578 degree output
     // shaft angle)
@@ -76,9 +76,10 @@ class StepperDriver {
         IN4{new EPOS::GPIO(motor_port_4, motor_pin_4, EPOS::GPIO::OUTPUT)},
         direction{0},
         current_step{0},
-        steps_per_motor_revolution{32},
-        step_delay{as_delay(motor_steps_per_second)}
-    {}
+        steps_per_motor_revolution{32}
+    {
+        set_speed(motor_steps_per_second);
+    }
 
     ~StepperDriver() {
         delete IN1;
@@ -91,7 +92,7 @@ class StepperDriver {
     // 32 motor steps = 1 motor revolution
     // 2048 motor steps = 1 shaft revolution
     void set_speed(double motor_steps_per_second) {
-        step_delay = as_delay(motor_steps_per_second);
+        step_delay = (long unsigned int)((1 / motor_steps_per_second) * 1000 * 1000);
     }
 
     void move(int steps_to_move) {
