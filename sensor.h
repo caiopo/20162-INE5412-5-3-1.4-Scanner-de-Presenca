@@ -1,3 +1,6 @@
+#ifndef __SENSOR_H__
+#define __SENSOR_H__
+
 #include <gpio.h>
 
 class Sensor {
@@ -30,9 +33,8 @@ public:
 
         while(echo->get()) ++i;
 
-        cout << "i: " << i;
-        cout << '\n';
-
         return i / 150;
     }
 };
+
+#endif /* __SENSOR_H__ */

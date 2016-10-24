@@ -1,11 +1,11 @@
+#ifndef __STEPPER_DRIVER_H__
+#define __STEPPER_DRIVER_H__
+
 // This class is meant to be used with the 28BYJ-48 Stepper Motor alongside it's
 // ULN2003 Driver
 
-#include <utility/ostream.h>
 #include <alarm.h>
 #include <gpio.h>
-
-// EPOS::OStream cout;
 
 class StepperDriver {
  private:
@@ -22,10 +22,6 @@ class StepperDriver {
     int steps_per_motor_revolution;
     int current_step;
 
-    // long unsigned int as_delay(double motor_steps_per_second) {
-    //     return
-    // }
-
     // Using Wave Drive (11.25 degree motor step angle | ~0.17578 degree output
     // shaft angle)
     void step(int this_step) {
@@ -35,28 +31,24 @@ class StepperDriver {
                 IN2->set(false);
                 IN3->set(false);
                 IN4->set(false);
-                cout << "A should light up\n";
             break;
             case 1:  // 0100
                 IN1->set(false);
                 IN2->set(true);
                 IN3->set(false);
                 IN4->set(false);
-                cout << "B should light up\n";
             break;
             case 2:  // 0010
                 IN1->set(false);
                 IN2->set(false);
                 IN3->set(true);
                 IN4->set(false);
-                cout << "C should light up\n";
             break;
             case 3:  // 0001
                 IN1->set(false);
                 IN2->set(false);
                 IN3->set(false);
                 IN4->set(true);
-                cout << "D should light up\n";
             break;
         }
     }
@@ -131,10 +123,15 @@ class StepperDriver {
 
             // Decrement the steps left:
             steps_left--;
-            cout << "Steps left: " << steps_left << '\n';
+
+            if (!(steps_left % 10)){
+                cout << "Steps left: " << steps_left << '\n';
+            }
 
             // Step the motor to step number 0, 1, ..., 3
             step(current_step % 4);
         }
     }
 };
+
+#endif /* __STEPPER_DRIVER_H__ */
