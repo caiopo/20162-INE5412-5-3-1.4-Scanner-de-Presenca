@@ -42,11 +42,7 @@ class StepperMotor {
         int offset;
         target_coord = target_coord % NSLICES;
 
-        if(target_coord == 0 && current_coord >= N_SLICES/2) {
-            offset = N_SLICES - current_coord;
-        } else {
-            offset = -(current_coord - target_coord);
-        }
+        offset = -(current_coord - target_coord);
 
         driver.move(offset * STEPS_PER_SLICE);
         current_coord = target_coord;
