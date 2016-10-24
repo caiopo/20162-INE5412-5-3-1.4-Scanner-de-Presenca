@@ -25,11 +25,12 @@ int main(int argc, char** argv) {
         // Represents moving 1 coordinate clock-wise
         motor.move(64);
 
+        led.set(false);
+
         cout << "Doing 64 motor steps counterclock-wise:\n";
         // Sequence should go D, C, B, A.
         // Represents moving 1 coordinate counterclock-wise
         motor.move(-64);
 
-        led.set(false);
     }
 }

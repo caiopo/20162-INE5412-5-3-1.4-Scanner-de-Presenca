@@ -10,7 +10,7 @@ class StepperDriver {
     EPOS::GPIO *IN1, *IN2, *IN3, *IN4; // Blue, pink, yellow, orange, repectivelly
 
     int direction;                  // Direction of rotation (1 is CW, 0 is CCW)
-    unsigned int step_delay;       // Delay between steps, in microseconds, based on speed
+    long unsigned int step_delay;       // Delay between steps, in microseconds, based on speed
     int steps_per_motor_revolution;
     int current_step;
 
@@ -76,7 +76,7 @@ class StepperDriver {
     // 32 motor steps = 1 motor revolution
     // 2048 motor steps = 1 shaft revolution
     void set_speed(double motor_steps_per_second) {
-        step_delay = (unsigned int)((1 / motor_steps_per_second) * 1000 * 1000);
+        step_delay = (long unsigned int)((1 / motor_steps_per_second) * 1000 * 1000);
     }
 
     void move(int steps_to_move) {
@@ -98,7 +98,7 @@ class StepperDriver {
         // Decrement the number of steps, moving one step each time:
         while (steps_left > 0) {
             // Move after the appropriate delay has passed:
-            EPOS::Delay(step_delay);
+            EPOS::Delay((const long unsigned int)step_delay);
 
             // Increment or decrement the step number, depending on direction:
             if (direction == 1) {
