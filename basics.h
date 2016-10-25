@@ -4,20 +4,20 @@
 #include <utility/ostream.h>
 #include <gpio.h>
 
-#include "stepper_motor.h"
-#include "sensor.h"
-
 typedef unsigned short Distance;
 
 EPOS::OStream cout;
 
+#include "stepper_motor.h"
+#include "sensor.h"
+
 EPOS::GPIO led('C', 3, EPOS::GPIO::OUTPUT);
 
-StepperMotor motorH('A', 0,
-              'A', 2,
-              'A', 5,
-              'A', 7,
-              1);
+StepperMotor motorH('C', 4,
+              'C', 7,
+              'B', 2,
+              'B', 5,
+              60);
 
 StepperMotor motorV('B', 1,
               'B', 2,
@@ -25,6 +25,6 @@ StepperMotor motorV('B', 1,
               'B', 4,
               1);
 
-Sensor sensor('C', 4, 'A', 5);
+Sensor sensor('C', 4, 'C', 7);
 
 #endif /* __BASICS_H__ */

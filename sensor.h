@@ -18,20 +18,21 @@ public:
         delete echo;
     }
 
-    unsigned int read() {
+    Distance read() {
         trigger->set(false);
         EPOS::Delay(2);
         trigger->set(true);
         EPOS::Delay(10);
         trigger->set(false);
 
-        int i = 0;
+        Distance i = 0;
 
         while(echo->get());
 
         while(!echo->get());
 
-        while(echo->get()) ++i;
+        while(echo->get())
+            ++i;
 
         return i / 150;
     }

@@ -30,8 +30,10 @@ public:
     Distance* put(size_t i, size_t j, Distance dist) {
         auto index = i * _width + j;
 
+        Distance _before = data[index];
+
         Distance* before = (comparison && lt_error(data[index], dist)) ?
-            &data[index] : nullptr;
+            &_before : 0;
 
         data[index] = dist;
 
