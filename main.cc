@@ -24,7 +24,8 @@ int main(int argc, char** argv) {
                 if (before) {
                     alert.alert(i, j, *before, distance);
                     led.set(true);
-                    EPOS::Delay(5 * 1000 * 1000)
+                    EPOS::Delay(5 * 1000 * 1000);
+                    led.set(false);
                 }
 
                 motorH.turn_to(i);
@@ -33,6 +34,6 @@ int main(int argc, char** argv) {
             motorV.turn_to(j);
         }
 
-        matrix.enable_comparison()
+        matrix.enable_comparison();
     }
 }
