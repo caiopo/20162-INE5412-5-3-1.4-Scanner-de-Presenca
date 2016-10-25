@@ -8,13 +8,13 @@ void test_countdown() {
   }
 }
 
-int main(int argc, char const *argv[]) {
-  cout << "Esse teste irá, através da plataforma EPOSMote III, comandar o \n
-           motor para que ele vá da coordenada 0 (inicial) até 8 (90 graus \n
-           sentido horário), esperar 5 segundos, mover para a coordenada 24 \n
-           (270 graus, sentido horário),esperar 5 segundos, mover para a \n
-           coordenada 31 (348,75 graus sentido horário), esperar 5 segundos \n
-           e voltar até a coordenada 0 (348,75 graus sentido anti-horário).\n";
+int main(int argc, char** argv) {
+  cout << "Esse teste irá, através da plataforma EPOSMote III, comandar o \n"
+          "motor para que ele vá da coordenada 0 (inicial) até 8 (90 graus \n"
+          "sentido horário), esperar 5 segundos, mover para a coordenada 24 \n"
+          "(270 graus, sentido horário),esperar 5 segundos, mover para a \n"
+          "coordenada 31 (348,75 graus sentido horário), esperar 5 segundos \n"
+          "e voltar até a coordenada 0 (348,75 graus sentido anti-horário).\n";
 
   test_countdown();
 

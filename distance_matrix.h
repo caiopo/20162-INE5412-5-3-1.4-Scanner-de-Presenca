@@ -30,7 +30,8 @@ public:
     Distance* put(size_t i, size_t j, Distance dist) {
         auto index = i * _width + j;
 
-        Distance* before = (comparison && lt_error(data[index], dist)) ? &data[index] : nullptr;
+        Distance* before = (comparison && lt_error(data[index], dist)) ?
+            &data[index] : nullptr;
 
         data[index] = dist;
 
@@ -50,6 +51,17 @@ public:
     }
 
     size_t width() {
-        return width;
+        return _width;
+    }
+
+    void print() {
+        for (size_t i = 0; i < width(); ++i) {
+            for (size_t j = 0; j < height(); ++j) {
+
+                cout << get(i, j) << ' ';
+
+            }
+            cout << '\n';
+        }
     }
 };

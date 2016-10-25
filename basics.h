@@ -17,16 +17,14 @@ StepperMotor motorH('A', 0,
               'A', 2,
               'A', 5,
               'A', 7,
-              32.0/60.0);
+              1);
 
-StepperMotor motorV('C', 4,
-              'C', 7,
+StepperMotor motorV('B', 1,
               'B', 2,
-              'B', 5,
-              32.0/60.0);
+              'B', 3,
+              'B', 4,
+              1);
 
-Sensor sensor('A', 2, 'A', 5);
-
-
+Sensor sensor('C', 4, 'A', 5);
 
 #endif /* __BASICS_H__ */

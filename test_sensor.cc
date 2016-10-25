@@ -9,16 +9,16 @@ void test_countdown() {
 }
 
 int main(int argc, char const *argv[]) {
-  cout << "Esse teste irá, através da plataforma EPOSMote III, comandar o \n
-           sensor ultrasônico para medir a distância atual em intervalos \n
-           regulares de 5 segundos, durante 30 segundos.\n";
+  cout << "Esse teste irá, através da plataforma EPOSMote III, comandar o \n"
+          "sensor ultrasônico para medir a distância atual em intervalos \n"
+          "regulares de 5 segundos, durante 30 segundos.\n";
 
   test_countdown();
 
   while(true) {
     cout << "// ----- // Iniciando Teste  // ----- //\n";
 
-    for (int i = 0; i < 7; ++i) {
+    for (int i = 0; i < 6; ++i) {
       cout << "Distância medida: " << sensor.read() << '\n';
       EPOS::Delay(5000000);
     }

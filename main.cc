@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
             for (size_t i = 0; i < matrix.width(); ++i) {
                 Distance distance = sensor.read();
 
-                auto before = matrix.put(i, j, distance)
+                auto before = matrix.put(i, j, distance);
 
                 if (before) {
                     alert.alert(i, j, *before, distance);
