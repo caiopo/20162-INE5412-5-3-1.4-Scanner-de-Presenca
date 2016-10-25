@@ -124,9 +124,9 @@ class StepperDriver {
             // Decrement the steps left:
             steps_left--;
 
-            if (!(steps_left % 10)){
-                cout << "Steps left: " << steps_left << '\n';
-            }
+            // if (!(steps_left % 10)){
+            //     cout << "Steps left: " << steps_left << '\n';
+            // }
 
             // Step the motor to step number 0, 1, ..., 3
             step(current_step % 4);

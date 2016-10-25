@@ -1,6 +1,4 @@
 #include "basics.h"
-#include "stepper_motor.h"
-#include "sensor.h"
 #include "distance_matrix.h"
 #include "alert.h"
 

@@ -2,8 +2,10 @@
 #define __BASICS_H__
 
 #include <utility/ostream.h>
-
 #include <gpio.h>
+
+#include "stepper_motor.h"
+#include "sensor.h"
 
 typedef unsigned short Distance;
 
